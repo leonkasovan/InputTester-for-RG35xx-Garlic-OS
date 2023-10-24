@@ -25,7 +25,37 @@
 #define RG35_R1_CODE        108             /* RG35xx button code */
 #define RG35_R2_CODE        107             /* RG35xx button code */
 
-#define MENU_BUTTON         RG35_MENU_CODE  /* Code of the pressed button to exit the application                     */
+#define RG35XX_MENU_CODE      9             /* RG35xx button code */
+#define RG35XX_UP_CODE        1             /* RG35xx button code */
+#define RG35XX_RIGHT_CODE     2             /* RG35xx button code */
+#define RG35XX_DOWN_CODE      4             /* RG35xx button code */
+#define RG35XX_LEFT_CODE      8             /* RG35xx button code */
+#define RG35XX_A_CODE         0             /* RG35xx button code */
+#define RG35XX_B_CODE         1             /* RG35xx button code */
+#define RG35XX_X_CODE         2             /* RG35xx button code */
+#define RG35XX_Y_CODE         3             /* RG35xx button code */
+#define RG35XX_SELECT_CODE    7             /* RG35xx button code */
+#define RG35XX_START_CODE     8             /* RG35xx button code */
+#define RG35XX_L1_CODE        5             /* RG35xx button code */
+#define RG35XX_R1_CODE        6             /* RG35xx button code */
+#define RG35XX_POWER     	  4             /* RG35xx button code */
+#define RG35XX_VOLUME_INC     10             /* RG35xx button code */
+#define RG35XX_VOLUME_DEC     11             /* RG35xx button code */
+/* 
+Saat L2 atau R2 dipencet maka event SDL_JOYAXISMOTION
+
+L2
+event.jaxis.axis = 2
+event.jaxis.value = 32767 (Press down)
+event.jaxis.value = -32768 (Press down)
+
+R2
+event.jaxis.axis = 5
+event.jaxis.value = 32767 (Press down)
+event.jaxis.value = -32768 (Press down)
+*/
+
+#define MENU_BUTTON         RG35XX_MENU_CODE  /* Code of the pressed button to exit the application                     */
 #define MENU_BUTTON_INDEX   0               /* Button config list index of the pressed button to exit the application */
 #define EXIT_PRESS_TIME     2000            /* Number of ms to press on menu to close the application                 */
 
@@ -48,5 +78,23 @@
 	{NULL, NULL, {220,  15, 0, 0}, {238,  60, 0, 0}, "L2", 	 	0, RG35_L2_CODE},\
 	{NULL, NULL, {430,  15, 0, 0}, {449,  60, 0, 0}, "R1", 	 	0, RG35_R1_CODE},\
 	{NULL, NULL, {355,  15, 0, 0}, {374,  60, 0, 0}, "R2", 	 	0, RG35_R2_CODE}\
+}
+#define BUTTONS_CONFIG2 \
+{\
+	{NULL, NULL, {290, 120, 0, 0}, {300, 170, 0, 0}, "Menu", 	0, RG35XX_MENU_CODE},\
+	{NULL, NULL, {100, 120, 0, 0}, {640,   0, 0, 0}, "Up", 	 	0, RG35XX_UP_CODE},    /* Print outside the screen - invisible */\
+	{NULL, NULL, {169, 190, 0, 0}, {640,   0, 0, 0}, "Right",  	0, RG35XX_RIGHT_CODE}, /* Print outside the screen - invisible */\
+	{NULL, NULL, {100, 260, 0, 0}, {640,   0, 0, 0}, "Down", 	0, RG35XX_DOWN_CODE},  /* Print outside the screen - invisible */\
+	{NULL, NULL, { 30, 190, 0, 0}, {640,   0, 0, 0}, "Left",  	0, RG35XX_LEFT_CODE},  /* Print outside the screen - invisible */\
+	{NULL, NULL, {540, 190, 0, 0}, {565, 250, 0, 0}, "A", 	 	0, RG35XX_A_CODE},\
+	{NULL, NULL, {475, 255, 0, 0}, {500, 315, 0, 0}, "B", 	 	0, RG35XX_B_CODE},\
+	{NULL, NULL, {476, 125, 0, 0}, {501, 185, 0, 0}, "X", 	 	0, RG35XX_X_CODE},\
+	{NULL, NULL, {410, 190, 0, 0}, {435, 250, 0, 0}, "Y", 	 	0, RG35XX_Y_CODE},\
+	{NULL, NULL, {240, 330, 0, 0}, {240, 390, 0, 0}, "Select", 	0, RG35XX_SELECT_CODE},\
+	{NULL, NULL, {340, 330, 0, 0}, {343, 390, 0, 0}, "Start",  	0, RG35XX_START_CODE},\
+	{NULL, NULL, {145,  15, 0, 0}, {163,  60, 0, 0}, "L1", 	 	0, RG35XX_L1_CODE},\
+	{NULL, NULL, {220,  15, 0, 0}, {238,  60, 0, 0}, "L2", 	 	0, RG35XX_L2_CODE},\
+	{NULL, NULL, {430,  15, 0, 0}, {449,  60, 0, 0}, "R1", 	 	0, RG35XX_R1_CODE},\
+	{NULL, NULL, {355,  15, 0, 0}, {374,  60, 0, 0}, "R2", 	 	0, RG35XX_R2_CODE}\
 }
 #endif
