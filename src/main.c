@@ -1,8 +1,12 @@
+/*
+Demo Input Gamepad Tester using SDL1.2
+Device:RG35XX OS:Koriki [ok]
+*/
 #include <stdio.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_image.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_image.h>
 #include "config.h"
 
 typedef struct Button_Tag
@@ -17,7 +21,6 @@ typedef struct Button_Tag
 }Button;
 
 Button buttons[NO_BUTTONS] = BUTTONS_CONFIG; /* List of buttons */
-Button buttons2[NO_BUTTONS] = BUTTONS_CONFIG2; /* List of buttons */
 
 SDL_Surface 	* screen 			= NULL;
 SDL_Surface 	* textSurface		= NULL;
@@ -25,10 +28,9 @@ SDL_Rect 		textLocation 		= { 0, 0, 0, 0 };
 TTF_Font    	* textFont   		= NULL;            
 SDL_Color   	textColor 			= { 255, 255, 255 }; 
 SDL_Color   	backgroundColor	    = { 0, 0, 100 }; 
-char 			text[60]     		= "";
+char 			text[60]     		= "Hold [Menu] button 2 seconds to quit";
 SDL_Event   	event 				= {0};
 int				running				= 1;
-int				pressedButton		= 0;
 int				startMenuPress		= 0;
 SDL_Joystick* joystick;
 
@@ -72,8 +74,9 @@ int setup()
 	SDL_ShowCursor(SDL_DISABLE);
 	screen = SDL_SetVideoMode(WINDOW_W, WINDOW_H, 16, SDL_SWSURFACE);
 	textFont = TTF_OpenFont("./res/SourceCodePro-Regular.ttf", 16);
-	pressedButton = 0;
 	initButtons();
+	textLocation.x = 45;
+	textLocation.y = 450;
 	return 1;
 }
 
@@ -88,17 +91,17 @@ void processInput()
 		case SDL_QUIT:
 			 running = 0;	
 		break;
-		case SDL_KEYDOWN:	
+		case SDL_JOYBUTTONDOWN:
+			sprintf(text,"Event SDL_JOYBUTTONDOWN %d", event.jbutton.button);
 			for (i = 0; i < NO_BUTTONS; ++i)
 			{
-				if (event.key.keysym.sym == MENU_BUTTON)
+				if (event.jbutton.button == MENU_BUTTON)
 				{
 					if (buttons[MENU_BUTTON_INDEX].selected == 0)
 					{
 						buttons[MENU_BUTTON_INDEX].selected = 1;
 						startMenuPress = SDL_GetTicks();
 						buttons[MENU_BUTTON_INDEX].selected = 1;
-						pressedButton += buttons[MENU_BUTTON_INDEX].code;
 					}
 					else
 					{
@@ -110,66 +113,29 @@ void processInput()
 				}
 				else
 				{
-					if ((event.key.keysym.sym == buttons[i].code) && buttons[i].selected == 0)
+					if ((event.jbutton.button == buttons[i].code) && buttons[i].selected == 0)
 					{
 						buttons[i].selected = 1;
-						pressedButton += buttons[i].code;
 					}
 				}
-			}
-		break;
-		case SDL_KEYUP:
-			for (i = 0; i < NO_BUTTONS; ++i)
-			{
-				if ((event.key.keysym.sym == MENU_BUTTON) && (buttons[MENU_BUTTON_INDEX].selected != 0))
-				{
-					buttons[MENU_BUTTON_INDEX].selected = 0;
-					pressedButton -= buttons[MENU_BUTTON_INDEX].code;
-				}
-				else
-				{
-					if ((event.key.keysym.sym == buttons[i].code) && buttons[i].selected != 0)
-					{
-						buttons[i].selected = 0;
-						pressedButton -= buttons[i].code;
-					}
-				}
-			}
-		case SDL_JOYBUTTONDOWN:
-			sprintf(text,"Event SDL_JOYBUTTONDOWN %d", event.jbutton.button);
-			for (i = 0; i < NO_BUTTONS; ++i)
-			if ((event.jbutton.button == buttons2[i].code) && buttons2[i].selected == 0)
-			{
-				buttons2[i].selected = 1;
-				pressedButton += buttons2[i].code;
 			}
 		break;
 		case SDL_JOYBUTTONUP:
 			sprintf(text,"Event SDL_JOYBUTTONUP %d", event.jbutton.button);
 			for (i = 0; i < NO_BUTTONS; ++i)
-			if ((event.jbutton.button == buttons2[i].code) && buttons2[i].selected == 0)
 			{
-				buttons2[i].selected = 0;
-				pressedButton -= buttons2[i].code;
-			}
-			if (event.jbutton.button == 9) running = 0;
-		break;
-		case SDL_JOYHATMOTION:
-			sprintf(text,"Event SDL_JOYHATMOTION %d", event.jhat.value);
-			for (i = 1; i < 5; ++i)
-			if ((event.jhat.value == buttons2[i].code))
-			{
-				if (!buttons2[i].selected){
-					buttons2[i].selected = 0;
-					pressedButton -= buttons2[i].code;
-				}else{
-					buttons2[i].selected = 1;
-					pressedButton += buttons2[i].code;
+				if ((event.jbutton.button == MENU_BUTTON) && (buttons[MENU_BUTTON_INDEX].selected != 0))
+				{
+					buttons[MENU_BUTTON_INDEX].selected = 0;
+				}
+				else
+				{
+					if ((event.jbutton.button == buttons[i].code) && buttons[i].selected != 0)
+					{
+						buttons[i].selected = 0;
+					}
 				}
 			}
-		break;
-		case SDL_JOYAXISMOTION:
-			sprintf(text,"Event SDL_JOYAXISMOTION %d %d", event.jaxis.axis, event.jaxis.value);
 		break;
 		default:
 			sprintf(text,"Event.type: %d", event.type);
@@ -178,17 +144,9 @@ void processInput()
 }
 
 void update(int delta)
-{	
-	if (pressedButton != 0)
-	{
-		// sprintf(text,"Key code: 0x%x %d", pressedButton, pressedButton);
-	}
-	else
-	{
-		// sprintf(text,"Press any button! Press and hold menu button to exit.");
-	}
-	textLocation.x = 45;
-	textLocation.y = 450;
+{
+	//do nothing
+	NULL;
 }
 
 void renderButtons(void)

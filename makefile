@@ -2,8 +2,8 @@
 TARGET = inputTester
 
 CC = $(CROSS_COMPILE)gcc
-CFLAGS   = -Os -marm -mtune=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -march=armv7-a
-LDFLAGS	 = -ldl -lSDL -lSDL_image -lSDL_ttf -lpthread
+CFLAGS   = -I/opt/rg35xx/arm-buildroot-linux-gnueabihf/sysroot/usr/include/SDL/ -D_GNU_SOURCE=1 -D_REENTRANT -Os -marm -mtune=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=hard -march=armv7-a
+LDFLAGS	 = -ldl -lSDL -lm -lSDL_image -lSDL_ttf -lpthread -lfreetype
 
 all:
 	@mkdir -p build
